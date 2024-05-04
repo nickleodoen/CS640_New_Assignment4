@@ -4,7 +4,6 @@ public class TCPend {
   public static void main(String[] args){
     // java TCPend -p <port> -s <remote IP> -a <remote port> –f <file name> -m <mtu> -c <sws>
     // java TCPend -p 6000 -s x.x.x.x -a 5000 -f original.txt -m 200 -c 4
-
     // java TCPend -p <port> -m <mtu> -c <sws> -f <file name>
     // java TCPend -p 5000 -m 200 -c 4 -f test.txt
 
@@ -13,7 +12,7 @@ public class TCPend {
     } else if(args.length == 8) {
       createReceiver(args);
     } else {
-      System.out.println("Error: missing or additional arguments");
+      System.out.println("Error: missing / additional arguments");
     }
   }
 
@@ -23,7 +22,7 @@ public class TCPend {
       port = stringToPort(args[1]);
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: port is not a number");
+      System.out.println("Error: port isn't a number");
       return;
     }
 
@@ -31,7 +30,7 @@ public class TCPend {
     try {
       ip = InetAddress.getByName(args[3]);
     } catch(Exception e) {
-      System.out.println("Error: incorrect IP format");
+      System.out.println("Error: wrong IP format");
     }
 
     int remotePort = 0;
@@ -39,7 +38,7 @@ public class TCPend {
       remotePort = stringToPort(args[5]);
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: port is not a number");
+      System.out.println("Error: port isn't a number");
       return;
     }
 
@@ -54,7 +53,7 @@ public class TCPend {
       }
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: mtu is not a valid number");
+      System.out.println("Error: mtu isn't a valid number");
       return;
     }
 
@@ -67,7 +66,7 @@ public class TCPend {
       }
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: sws is not a valid number");
+      System.out.println("Error: sws isn't a valid number");
       return;
     }
 
@@ -83,7 +82,7 @@ public class TCPend {
       port = stringToPort(args[1]);
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: port is not a number");
+      System.out.println("Error: port isn't a number");
       return;
     }
     
@@ -96,7 +95,7 @@ public class TCPend {
       }
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: mtu is not a valid number");
+      System.out.println("Error: mtu isn't a valid number");
       return;
     }
 
@@ -109,7 +108,7 @@ public class TCPend {
       }
     }
     catch (NumberFormatException ex){
-      System.out.println("Error: sws is not a valid number");
+      System.out.println("Error: sws isn't a valid number");
       return;
     }
 

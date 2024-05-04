@@ -1,5 +1,5 @@
-import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,6 @@ public class TCPpacket{
   }
 
   short getChecksum(byte[] data){
-    //TODO: complete checksum
     return (short)0;
   }
 
@@ -86,11 +85,10 @@ public class TCPpacket{
           bb.put(this.payloadData);
         }
 
-        // compute checksum if needed
+        // checksum computation
         if (this.checksum == 0) {
             bb.rewind();
             int accumulation = 0;
-            // TODO: check if changing to headerSize is correct ... was headerLength before
             for (int i = 0; i < this.headerSize / 2; i++) {
                 accumulation += 0xffff & bb.getShort();
             }

@@ -1,7 +1,7 @@
-import java.util.PriorityQueue;
 import java.util.Timer;
+import java.util.PriorityQueue;
 
-// Manages timeout packets by adding and removing stored timeout packets
+// adds and removes timeout packets in store - full management
 public class TimeoutManager{
 	PriorityQueue<TimeoutPacket> packetBuffer = new PriorityQueue<TimeoutPacket>((p1, p2) -> p1.tcpPacket.seqNum - p2.tcpPacket.seqNum);
 	final Timer timer = new Timer();
@@ -41,8 +41,7 @@ public class TimeoutManager{
 		startPacketTimer(tcpPacket, 0);
 	}
 
-	// Creates a timeout packet and starts thread
-	// Adds timeout packet to queue
+	// create timeout packet, start thread, and add to queue
 	public void startPacketTimer(TCPpacket tcpPacket, int curRetrans){
 		synchronized(packetBuffer){
 			TimeoutPacket toPacket = new TimeoutPacket(this, tcpPacket, curRetrans);
@@ -53,7 +52,6 @@ public class TimeoutManager{
 	
 	public void resendPacket(TimeoutPacket packet) {
 		if(packet.curRetrans >= 16){
-			// System.out.println("Over max retransmissions ... quitting program");
 			base.stopThread();
 			return;
 		}
@@ -75,9 +73,8 @@ public class TimeoutManager{
 			}
 		}
 	}
-
-	// // Removes all packets based on ack number received
-	public void removePacket(int ackNum){
+	
+	public void removePacket(int ackNum){ // removes ACK packets
 		synchronized(packetBuffer){
 			while(packetBuffer.size() > 0 && packetBuffer.peek().tcpPacket.getReturnAck() <= ackNum){
 				TimeoutPacket toPacket = packetBuffer.poll();

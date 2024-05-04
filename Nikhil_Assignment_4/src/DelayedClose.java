@@ -2,7 +2,7 @@ public class DelayedClose extends Thread{
   private TCPbase tcp;
   private long time;
   
-  //Closes the thread after a certain amount of time. Used in FIN process.
+  // close thread and time parameter is consumed, used in FIN
   public DelayedClose(TCPbase tcp, long time){
     this.tcp = tcp;
     this.time = time;

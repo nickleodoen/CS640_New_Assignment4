@@ -6,15 +6,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 
-// Base class for TCP sender and receiver
-// Handles sending and receiving TCP packets
+// TCP sender and receiver's base class - sending and receiving packets handled here
 public abstract class TCPbase extends Thread{
-  private boolean doStop = false;
-  
+  private boolean stop = false;
   DatagramSocket socket;
   InetAddress ip;
   int remotePort;
-
   String fileName;
   int mtu, sws;
   int seqNum;
@@ -49,7 +46,7 @@ public abstract class TCPbase extends Thread{
   }
 
   public void run(){
-    // We have an ip ... we are the sender so connect and send initial packet
+    // Have an IP + Connect as sender, send initial packet
     if(ip != null){
       connectSocket();
       sendTCP(new byte[0], new Boolean[]{true,false,false});
@@ -258,14 +255,14 @@ public abstract class TCPbase extends Thread{
   }
 
   public synchronized void stopThread(){
-    this.doStop = true;
+    this.stop = true;
     disconnect();
     established = true;
     printStats();
   }
 
   protected synchronized boolean running(){
-    return this.doStop == false;
+    return this.stop == false;
   }
 
   public void disconnect(){

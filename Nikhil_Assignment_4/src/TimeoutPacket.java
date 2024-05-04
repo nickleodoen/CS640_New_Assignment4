@@ -1,7 +1,6 @@
 import java.util.TimerTask;
 
-// Individual timeout thread for each packet sent
-// Objects are destroyed when ACK is received for this packet
+// Individual timeout thread for each packet, removing objects when ACK received
 public class TimeoutPacket extends TimerTask{
 
 	public int curRetrans;
@@ -14,8 +13,7 @@ public class TimeoutPacket extends TimerTask{
 		this.curRetrans = curRetrans;
 	}
 
-	// Thread for timeout wait
-	public void run(){
+	public void run(){ // timeout wait thread
 		curRetrans += 1;
 		toMan.resendPacket(this);
 	}

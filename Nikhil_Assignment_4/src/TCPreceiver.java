@@ -1,11 +1,12 @@
+import java.util.PriorityQueue;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.PriorityQueue;
+import java.io.FileOutputStream;
 
-// Receives file from sender using TCP from base class
+
+// Receives a file from sender using TCPbase
 public class TCPreceiver extends TCPbase{
   PriorityQueue<TCPpacket> packetBuffer;
   FileOutputStream stream;
@@ -26,14 +27,11 @@ public class TCPreceiver extends TCPbase{
     byte[] data = packet.payloadData;
 
     if (packet.seqNum < ackNum){
-      //System.out.println("Duplicate packet ... dropping"); 
       outOfSeqPackets += 1;
       return;
     } else if(packet.seqNum > ackNum){
-      //System.out.println("Packet out of order ... putting it in packet buffer");
       outOfSeqPackets += 1;
-      // Check for duplicate packet
-      for (TCPpacket p : packetBuffer){
+      for (TCPpacket p : packetBuffer){ // check for duplicate packet
         if (p.seqNum == packet.seqNum)
           return;
         else if (p.seqNum > packet.seqNum)
@@ -47,10 +45,8 @@ public class TCPreceiver extends TCPbase{
     ackNum = packet.seqNum + Math.max(packet.payloadData.length, 1);
     dataTransfered += packet.payloadData.length;
 
-    // Write data to file
     try{
-      // Use FileChannel to write at position for out of order data
-      // https://stackoverflow.com/questions/9558979/java-outputstream-skip-offset
+      // using FileChannel for out-of-order data - // https://stackoverflow.com/questions/9558979/java-outputstream-skip-offset
       stream.write(data);
 
       if(packetBuffer.size() > 0)

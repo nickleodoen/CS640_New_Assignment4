@@ -1,24 +1,22 @@
 import java.net.InetAddress;
+import java.lang.Math;
+import java.nio.ByteBuffer;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.lang.Math;
+import java.io.FileInputStream;
 
-//Sends file to receiver
 public class TCPsender extends TCPbase{
 
   public TCPsender(int port, InetAddress ip, int remotePort, String fileName, int mtu, int sws){
     super(port, fileName, mtu, sws);
 
-    this.ip = ip; //IP of the remote peer.
-    this.remotePort = remotePort; //remote port to send to.
+    this.ip = ip; // remote IP
+    this.remotePort = remotePort; // remote port (send to)
   }
 
-  //Send file over to receiver.
-  public void sendFile(){
+  public void sendFile(){ // to receiver
     while (established == false);
     if (running() == false)
       return;
@@ -33,11 +31,9 @@ public class TCPsender extends TCPbase{
 
     try {
       while (stream.available() > 0){
-        // Check if we are in the sliding window.
-        toMan.waitTillPacketsLessThanNum(sws-1);
+        toMan.waitTillPacketsLessThanNum(sws-1); // check if sliding window
 
-        // Read data into byte new array of maximum size
-        byte[] data = new byte [Math.min(getMaxDataSize(), stream.available())];
+        byte[] data = new byte [Math.min(getMaxDataSize(), stream.available())]; // data into byte array of max size
         stream.read(data, 0, data.length);
 
         if (running() == false)
